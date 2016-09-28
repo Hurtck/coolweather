@@ -77,12 +77,17 @@ public class ChooseAreaActivity extends Activity {
      */
     private int currentLevel;
 
+    private boolean isFromWeatherActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        isFromWeatherActivity = getIntent().getBooleanExtra("From_weather_activity",false);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (prefs.getBoolean("city_select",false)){
+
+        if (prefs.getBoolean("city_selected",false)&&isFromWeatherActivity){
             Intent intent = new Intent(this,WheatherActivity.class);
             startActivity(intent);
             finish();
@@ -278,6 +283,10 @@ public class ChooseAreaActivity extends Activity {
         } else if (currentLevel == LEVEL_CITY) {
             queryProvinces();
         } else {
+            if (isFromWeatherActivity){
+                Intent intent = new Intent(this,WheatherActivity.class);
+                startActivity(intent);
+            }
             finish();
 
         }
